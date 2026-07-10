@@ -2,7 +2,7 @@
 
 client_id = "382a785341a7564056b4bdb568d0ef10"
 # application_url = "https://example.com"
-application_url = "https://bulk-discount-app.render.com"
+application_url = "https://bulk-discount-app.onrender.com"
 embedded = true
 name = "bulk discount app"
 
@@ -49,7 +49,7 @@ api_version = "2026-10"
 
 [auth]
 # redirect_urls = [ "https://example.com/api/auth" ]
-redirect_urls = [ "https://bulk-discount-app.render.com/api/auth" ]
+redirect_urls = [ "https://bulk-discount-app.onrender.com/api/auth" ]
 
 [build]
 automatically_update_urls_on_dev = true
