@@ -1,7 +1,8 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "382a785341a7564056b4bdb568d0ef10"
-application_url = "https://example.com"
+# application_url = "https://example.com"
+application_url = "https://bulk-discount-app.render.com"
 embedded = true
 name = "bulk discount app"
 
@@ -37,17 +38,18 @@ type = "multi_line_text_field"
 api_version = "2026-10"
 
   [[webhooks.subscriptions]]
-  # uri = "/webhooks/app/scopes_update"
-  uri = "https://example.com/webhooks/app/scopes_update"
+  uri = "/webhooks/app/scopes_update"
+  # uri = "https://example.com/webhooks/app/scopes_update"
   topics = [ "app/scopes_update" ]
 
   [[webhooks.subscriptions]]
-  # uri = "/webhooks/app/uninstalled"
-  uri = "https://example.com/webhooks/app/uninstalled"
+  uri = "/webhooks/app/uninstalled"
+  # uri = "https://example.com/webhooks/app/uninstalled"
   topics = [ "app/uninstalled" ]
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+# redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = [ "https://bulk-discount-app.render.com/api/auth" ]
 
 [build]
 automatically_update_urls_on_dev = true
