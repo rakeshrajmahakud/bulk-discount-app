@@ -38,13 +38,13 @@ type = "multi_line_text_field"
 api_version = "2026-10"
 
   [[webhooks.subscriptions]]
-  uri = "/webhooks/app/scopes_update"
-  # uri = "https://example.com/webhooks/app/scopes_update"
+  # uri = "/webhooks/app/scopes_update"
+  uri = "https://example.com/webhooks/app/scopes_update"
   topics = [ "app/scopes_update" ]
 
   [[webhooks.subscriptions]]
-  uri = "/webhooks/app/uninstalled"
-  # uri = "https://example.com/webhooks/app/uninstalled"
+  # uri = "/webhooks/app/uninstalled"
+  uri = "https://example.com/webhooks/app/uninstalled"
   topics = [ "app/uninstalled" ]
 
 [auth]
