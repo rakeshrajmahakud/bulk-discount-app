@@ -23,6 +23,7 @@ export default function App() {
           alignItems="center"
           justifyContent="center"
           minBlockSize="70vh"
+          
         >
           <s-box
             maxInlineSize="540px"

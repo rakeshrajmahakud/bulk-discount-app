@@ -1,6 +1,47 @@
-import { useState , useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFetcher } from "react-router";
 import { authenticate } from "../shopify.server"; // this is the file that contains the shopify api key . It is used to authenticate the user 
+
+function escapeCsvValue(value) {
+  const text = String(value ?? "");
+
+  if (/[",\n\r]/.test(text)) {
+    return `"${text.replaceAll('"', '""')}"`;
+  }
+
+  return text;
+}
+
+function buildCodesCsv(codes) {
+  const rows = [["code"], ...codes.map((code) => [code])];
+  return rows.map((row) => row.map(escapeCsvValue).join(",")).join("\r\n");
+}
+
+function createDownloadFilename(title) {
+  const safeTitle = String(title ?? "discount-codes")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return `${safeTitle || "discount-codes"}-codes.csv`;
+}
+
+function downloadCsvFile(codes, title) {
+  const csv = buildCodesCsv(codes);
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = createDownloadFilename(title);
+  link.style.display = "none";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}
 
 
 
@@ -269,6 +310,14 @@ export default function CreateDiscountUI(){
     setSelectedProducts((prev) => prev.filter((product) => product.id !== idRemove));
   };
 
+  const handleDownloadCsv = () => {
+    if (codes.length === 0) {
+      return;
+    }
+
+    downloadCsvFile(codes, title);
+  };
+
   useEffect(()=>{
     if(!fetcher.data) return;
 
@@ -322,7 +371,7 @@ export default function CreateDiscountUI(){
   }
 
   return(
-    <s-page heading="Bulk discount code geenerator" padding="base">
+    <s-page heading="Bulk discount code generator" padding="base">
       <s-section heading="Create Discount codes" padding="base">
         <s-card padding="base">
           <s-stack gap="base">
@@ -432,16 +481,26 @@ export default function CreateDiscountUI(){
       {codes.length > 0 &&
         (
           <s-section heading="Discount codes" padding="base">
+            <s-box padding="base" style={{ display: "flex", justifyContent: "flex-end" }} tone="success">
+              <s-button variant="primary" onClick={handleDownloadCsv} padding="base">
+                Download CSV
+              </s-button>
+            </s-box>
             <s-card padding="base">
-              <s-unordered-list padding="base">
-                {codes.map((code)=>(
-                  <s-list-item key={code} padding="base">
-                    <s-badge tone="neutral" icon="discount" key={code} padding="base" >{code}</s-badge>
-                  </s-list-item>
-                ))}
-              </s-unordered-list>
+              <s-stack gap="base">
+                <s-unordered-list padding="base">
+                  {codes.map((code) => (
+                    <s-list-item key={code} padding="base">
+                      <s-badge tone="neutral" icon="discount" key={code} padding="base">
+                        {code}
+                      </s-badge>
+                    </s-list-item>
+                  ))}
+                </s-unordered-list>
+              </s-stack>
             </s-card>
           </s-section>
+
         )
       }
     </s-page>
